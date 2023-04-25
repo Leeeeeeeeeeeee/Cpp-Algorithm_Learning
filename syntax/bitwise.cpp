@@ -1,5 +1,8 @@
 #include <iostream>
 using namespace std;
+/**
+ * 位计算方法
+*/
 int main(){
   int a=25,b=18,m,n,i,j,k;
   //按位与 --> 1&1=1 1&0=0 0&1=0 0&0=0
