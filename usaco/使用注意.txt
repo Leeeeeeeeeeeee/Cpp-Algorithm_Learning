@@ -1,0 +1,25 @@
+1.最新的编译器是32位的，Borland的编译器是16位的。
+2.上传的源代码文件头：
+/*
+ID: qq267181
+TASK: task-name
+LANG: C++       
+*/
+3.建议使用ufferedReader和StringTokenizer，可以很高很多效率
+4.编译的限制：
+- 不能使用控制台输出
+- 1秒运行时间
+- 16MB数据大小
+- 1MB堆大小
+- 确保程序退出（C：exit(0)；C++：return 0；）
+- 确保输出了所有的字符，包括换行符
+- 不要使用除了input和output之外的文件
+- 输出使用_代替空格
+- 关于C++：
+    - 如果您在 C++ 中使用 try/catch/throw，请包含此注释：/*pragma handle-exceptions*/;
+    - In C/C++, ints are 32 bits (char is 8; short is 16; long is 32; long long is 64);
+    - some libraries have new names, some have different or missing functions
+    - stricmp doesn't exist; use strcmp for string compares
+    - strrev does not exist
+    - neither itoa nor ltoa exists (use sprintf instead)
+    - No need for huge declarations - pointers already go everywhere

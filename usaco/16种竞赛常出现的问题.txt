@@ -1,0 +1,22 @@
+16种问题：
+
+Dynamic Programming
+Greedy
+Complete Search
+Flood Fill
+Shortest Path
+Recursive Search Techniques
+Minimum Spanning Tree
+Knapsack
+Computational Geometry
+Network Flow
+Eulerian Path
+Two-Dimensional Convex Hull
+BigNums
+Heuristic Search
+Approximate Search
+Ad Hoc Problems
+
+更复杂的问题是上述问题的组合或一种算法与另一种算法的循环
+
+如果你能掌握解决这些问题类型中的 40%，你几乎可以保证在 IOI 上获得银牌。 掌握 80% 几乎可以肯定会让您进入金牌范围。
