@@ -25,6 +25,7 @@ int main()
   {
     // 认为当前的珠子是右边第一个珠子
     // 左右两边的珠子相同的时候不切
+    // 优化：record which color we're going to collect
     if (beads[i] != beads[(n + i - 1) % n])
     {
       // cout << "i:" << i;
