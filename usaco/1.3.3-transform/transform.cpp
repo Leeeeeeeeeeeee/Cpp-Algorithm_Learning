@@ -25,6 +25,7 @@ int func90(int n, int **square_before, int **square_after)
   }
   return 1;
 }
+
 int func180(int n, int **square_before, int **square_after)
 {
   int i, j;
