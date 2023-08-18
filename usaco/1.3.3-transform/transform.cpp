@@ -6,231 +6,179 @@ LANG: C++
 
 #include <fstream>
 #include <iostream>
-#include <cstring>
-#include <algorithm>
+#include <vector>
+
 using namespace std;
+using Matrix = std::vector<std::vector<bool>>;
 
-int func90(int n, int **square_before, int **square_after)
+// 旋转90
+Matrix rotateMatrix(Matrix matrix_o)
 {
-  int i, j;
-  for (i = 0; i < n; i++)
+  int size = matrix_o.size();
+  if (1 == size)
   {
-    for (j = 0; j < n; j++)
+    return matrix_o;
+  }
+  Matrix martix_r = matrix_o;
+  for (int i = 0; i < size; ++i)
+  {
+    for (int j = 0; j < size; ++j)
     {
-      if (*(*(square_before + i) + j) != *(*(square_after + j) + abs(i - n + 1)))
-      {
-        return 0;
-      }
+      matrix_o[i][j] = martix_r[size - j - 1][i];
     }
   }
-  return 1;
+  return matrix_o;
 }
 
-int func180(int n, int **square_before, int **square_after)
-{
-  int i, j;
-  for (i = 0; i < n; i++)
-  {
-    for (j = 0; j < n; j++)
-    {
-      if (*(*(square_before + i) + j) != *(*(square_after + abs(j - n + 1)) + abs(j - n + 1)))
-      {
-        return 0;
-      }
-    }
-  }
-  return 2;
-}
-int func270(int n, int **square_before, int **square_after)
-{
-  int i, j;
-  for (i = 0; i < n; i++)
-  {
-    for (j = 0; j < n; j++)
-    {
-      if (*(*(square_before + i) + j) != *(*(square_after + abs(j - n - 1)) + i))
-      {
-        return 0;
-      }
-    }
-  }
-  return 3;
-}
-int funcReflect(int n, int **square_before, int **square_after)
-{
-  int i, j;
-  for (i = 0; i < n; i++)
-  {
-    for (j = 0; j < n; j++)
-    {
-      if (*(*(square_before + i) + j) != *(*(square_after + i) + abs(j - n - 1)))
-      {
-        return 0;
-      }
-    }
-  }
-  return 4;
-}
-int funcReflectAndTurn(int n, int **square_before, int **square_after)
-{
-  int i, j;
-  int **square_temp = new int *[n];
-  for (int i = 0; i < n; i++)
-    square_temp[i] = new int[n];
+// // 旋转180
+// Matrix rotateMatrix180(Matrix matrix_o){
+//   int size = matrix_o.size();
+//   if(1==size){
+//     return matrix_o;
+//   }
+//   Matrix martix_r = matrix_o;
+//   for (int i = 0; i < size; ++i) {
+//     for (int j = 0; j < size; ++j) {
+//         matrix_o[i][j] = martix_r[size-i-1][size-j-1];
+//     }
+//   }
+//   return matrix_o;
+// }
 
-  for (i = 0; i < n; i++)
+// // 旋转270
+// Matrix rotateMatrix270(Matrix matrix_o){
+//   int size = matrix_o.size();
+//   if(1==size){
+//     return matrix_o;
+//   }
+//   Matrix martix_r = matrix_o;
+//   for (int i = 0; i < size; ++i) {
+//     for (int j = 0; j < size; ++j) {
+//         matrix_o[i][j] = martix_r[j][size-i-1];
+//     }
+//   }
+//   return matrix_o;
+// }
+
+// x轴镜像
+Matrix reflectMatrix(Matrix matrix_o)
+{
+  int size = matrix_o.size();
+  if (1 == size)
   {
-    for (j = 0; j < n; j++)
+    return matrix_o;
+  }
+  Matrix martix_r = matrix_o;
+  for (int i = 0; i < size; ++i)
+  {
+    for (int j = 0; j < size; ++j)
     {
-      square_temp[i][j] = *(*(square_before + i) + abs(j - n - 1));
+      matrix_o[i][j] = martix_r[i][size - j - 1];
     }
   }
-  if (func90(n, square_temp, square_after))
-  {
-    return 5;
-  }
-  else if (func180(n, square_temp, square_after))
-  {
-    return 5;
-  }
-  else if (func270(n, square_temp, square_after))
-  {
-    return 5;
-  }
-  else
-  {
-    return 0;
-  }
+  return matrix_o;
 }
-int funcNoChange(int n, int **square_before, int **square_after)
+
+// 判断两个矩阵是否相等
+bool areMatricesEqual(const Matrix &matrix1, const Matrix &matrix2)
 {
-  int i, j;
-  for (i = 0; i < n; i++)
+  if (matrix1.size() != matrix2.size() || matrix1[0].size() != matrix2[0].size())
   {
-    for (j = 0; j < n; j++)
+    return false;
+  }
+  for (int i = 0; i < matrix1.size(); ++i)
+  {
+    for (int j = 0; j < matrix1[0].size(); ++j)
     {
-      if (*(*(square_before + i) + j) != *(*(square_after + i) + j))
+      if (matrix1[i][j] != matrix2[i][j])
       {
-        return 0;
+        return false;
       }
     }
   }
-  return 6;
+  return true;
 }
+
+// // 打印矩阵
+// void printMatrix(const Matrix &matrix)
+// {
+//   for (int i = 0; i < matrix.size(); ++i)
+//   {
+//     for (int j = 0; j < matrix[0].size(); ++j)
+//     {
+//       cout << matrix[i][j];
+//     }
+//     cout << endl;
+//   }
+//   cout << endl;
+// }
+
+int workMatrix(Matrix matrix_o, Matrix matrix_t)
+{
+  int step = 0;
+  bool areMatricsEqual = false;
+  while (!areMatricsEqual && step < 4)
+  {
+    step++;
+    matrix_o = rotateMatrix(matrix_o);
+    areMatricsEqual = areMatricesEqual(matrix_o,matrix_t);
+    if(areMatricsEqual){
+      return step; //1-3 rotation
+    }
+  }
+  matrix_o = reflectMatrix(matrix_o);
+  areMatricsEqual = areMatricesEqual(matrix_o,matrix_t);
+  if(areMatricsEqual){
+    return 4; //reflection
+  }
+  while (!areMatricesEqual(matrix_o, matrix_t)&&step < 8)
+  {
+    step++;
+    matrix_o = rotateMatrix(matrix_o);
+    areMatricsEqual = areMatricesEqual(matrix_o,matrix_t);
+    if(areMatricsEqual){
+      return 5; //combination
+    }
+  }
+  matrix_o = reflectMatrix(matrix_o);
+  areMatricsEqual = areMatricesEqual(matrix_o,matrix_t);
+  if(areMatricsEqual){
+    return 6; //no change
+  }
+  return 7; //invalid
+}
+
 int main()
 {
-  int i = 0, j = 0;
-  int n = 0, answer = 0;
+  // init
+  int size;
   char temp;
+  int step = 0;
+  Matrix matrix_o;
+  Matrix matrix_t;
   // input
   ifstream fin("transform.in");
-  fin >> n;
-  // 1.声明二维数组
-  int **square_before = new int *[n];
-  for (int i = 0; i < n; i++)
-    square_before[i] = new int[n];
-  int **square_after = new int *[n];
-  for (int i = 0; i < n; i++)
-    square_after[i] = new int[n];
-  // 2.将transform.in的数据输入二维数组中
-  for (i = 0; i < n; i++)
+  fin >> size;
+  matrix_o.resize(size, vector<bool>(size));
+  matrix_t.resize(size, vector<bool>(size));
+  for (int i = 0; i < size; i++)
   {
-    for (j = 0; j < n; j++)
+    for (int j = 0; j < size; j++)
     {
       fin >> temp;
-      if (temp == '@')
-      {
-        square_before[i][j] = 1;
-      }
-      else if (temp == '-')
-      {
-        square_before[i][j] = 0;
-      }
+      matrix_o[i][j] = '-' == temp;
     }
   }
-  for (i = 0; i < n; i++)
+  for (int i = 0; i < size; i++)
   {
-    for (j = 0; j < n; j++)
+    for (int j = 0; j < size; j++)
     {
       fin >> temp;
-      if (temp == '@')
-      {
-        square_after[i][j] = 1;
-      }
-      else if (temp == '-')
-      {
-        square_after[i][j] = 0;
-      }
+      matrix_t[i][j] = '-' == temp;
     }
   }
-  // 3.cout输出查看数组的内容
-  /*for(i=0;i<n;i++){
-    for(j=0;j<n;j++){
-      cout << square_before[i][j] << ' ';
-    }
-    cout << endl;
-  }
-  cout << endl;
-  for(i=0;i<n;i++){
-    for(j=0;j<n;j++){
-      cout << square_after[i][j] << ' ';
-    }
-    cout << endl;
-  }*/
-
-  // compute && output
+  int pattern = workMatrix(matrix_o,matrix_t);
   ofstream fout("transform.out");
-
-  while (true)
-  {
-    answer = func90(n, square_before, square_after);
-    if (answer)
-    {
-      fout << answer;
-
-      break;
-    }
-    answer = func180(n, square_before, square_after);
-    if (answer)
-    {
-      fout << answer;
-      break;
-    }
-    answer = func270(n, square_before, square_after);
-    if (answer)
-    {
-      fout << answer;
-      break;
-    }
-    answer = funcReflect(n, square_before, square_after);
-    if (answer)
-    {
-      fout << answer;
-      break;
-    }
-    answer = funcReflectAndTurn(n, square_before, square_after);
-    if (answer)
-    {
-      fout << answer;
-      break;
-    }
-    answer = funcNoChange(n, square_before, square_after);
-    if (answer)
-    {
-      fout << answer;
-      break;
-    }
-    fout << '7';
-    break;
-  }
-
-  // output
-
-  for (int i = 0; i < n; i++)
-    delete[] square_before[i];
-  delete[] square_before;
-  for (int i = 0; i < n; i++)
-    delete[] square_after[i];
-  delete[] square_after;
+  fout << pattern <<endl ;
   return 0;
 }
