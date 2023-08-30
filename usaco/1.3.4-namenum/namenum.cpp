@@ -3,82 +3,69 @@ ID: qq267181
 TASK: namenum
 LANG: C++
 */
-
 #include <cstring>
-#include <forward_list>
 #include <fstream>
 #include <iostream>
-#include <map>
 
 using namespace std;
-
 int main()
 {
-  // init
-  map<char, array<char, 3>> phoneMap;
-  forward_list<string> dictList;
-  forward_list<string> outList;
-  phoneMap['2'] = {'A', 'B', 'C'};
-  phoneMap['3'] = {'D', 'E', 'F'};
-  phoneMap['4'] = {'G', 'H', 'I'};
-  phoneMap['5'] = {'J', 'K', 'L'};
-  phoneMap['6'] = {'M', 'N', 'O'};
-  phoneMap['7'] = {'P', 'R', 'S'};
-  phoneMap['8'] = {'T', 'U', 'V'};
-  phoneMap['9'] = {'W', 'X', 'Y'};
-  char namenum[5] = {' ', ' ', ' ', ' ', '\0'};
-  char at;
-  string dict;
-  // input
-  ifstream fin1("namenum.in");
-  fin1 >> namenum;
-  ifstream fin2("dict.txt");
-  while (fin2 >> dict)
+  string namenum;
+  string dictstr;
+  char phone[8][3] = {
+      {'A', 'B', 'C'},
+      {'D', 'E', 'F'},
+      {'G', 'H', 'I'},
+      {'J', 'K', 'L'},
+      {'M', 'N', 'O'},
+      {'P', 'R', 'S'},
+      {'T', 'U', 'V'},
+      {'W', 'X', 'Y'}};
+  int i = 0;
+  bool isEnd = false;
+  bool hasName = false;
+  ifstream num("namenum.in");
+  num >> namenum;
+  int n = namenum.length();
+  ifstream dict("dict.txt");
+  ofstream out("namenum.out");
+  dict >> dictstr;
+  while (!isEnd)
   {
-    dictList.push_front(dict);
-  };
-  ofstream fout("namenum.out");
-  auto it = dictList.begin();
-  while (it != dictList.end())
-  {
-    for (int i = 0; i < 4; i++)
+    // cout << "start" << endl;
+    dict >> dictstr;
+    if (dict.eof())
     {
-      // cout << "OUTTER" << endl;
-      for (int a = 0; a < 3; a++)
+      isEnd = true;
+    }
+    if (n != (int)dictstr.length())
+    {
+      continue;
+    }
+    for (i = 0; i < n; i++)
+    {
+      // cout << i << endl;
+      if (dictstr[i] < phone[namenum[i] - '2'][0])
       {
-        // cout << "MIDDLE" << endl;
-        at = phoneMap[namenum[i]][a];
-        // cout << "at:"<<at << endl;
-        auto it_t = it;
-        while (it_t != dictList.end())
-        {
-          // cout << "INNER" << endl;
-          // cout << "it_t[i]:"<< (*it_t)[i] << endl;
-          if (at == (*it_t)[i])
-          {
-            // cout << (*it_t)[i] << endl;
-            it = it_t;
-            // cout << "Inner Break" << endl;
-            break;
-          }
-          it_t++;
-        }
-        // cout << "NODE" << endl;
-        if (at == (*it)[i])
-        {
-          // cout << "Later Break" << endl;
-          break;
-        }
+        // cout << "small" << endl;
+        break;
       }
-      if (at != (*it)[i])
+      else if (dictstr[i] > phone[namenum[i] - '2'][2])
       {
-        // cout << "NONE" << endl;
-        fout << "NONE" << endl;
+        // cout << "large" << endl;
         break;
       }
     }
-    fout << (*it) << endl;
-    it++;
+    if (i == n)
+    {
+      // cout << dictstr << endl;
+      hasName = true;
+      out << dictstr << endl;
+    }
+  };
+  if (!hasName)
+  {
+    out << "NONE" << endl;
   }
   return 0;
 }
